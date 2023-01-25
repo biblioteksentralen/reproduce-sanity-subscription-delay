@@ -11,6 +11,9 @@ const ListItem = styled.li<{ selected?: boolean }>`
 `;
 
 const Title = styled.div`
+  display: flex;
+  gap: 1rem;
+  flex-wrap: nowrap;
   padding: 1rem;
 
   &:hover {
@@ -29,7 +32,10 @@ export const MenuItem = ({
 }) => (
   <ListItem selected={selected}>
     <NextLink href={href}>
-      <Title>{title ?? "Ukjent"}</Title>
+      <Title>
+        <span>{title ?? "Ukjent"}</span>
+        <span>{" >"}</span>
+      </Title>
     </NextLink>
   </ListItem>
 );

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
 import styled from "styled-components";
-import { DocumentListMenu } from "./DocumentListMenu";
+import DocumentListMenu from "./DocumentListMenu";
 import { MainMenu } from "./MainMenu";
 import { Navbar } from "./Navbar";
 
