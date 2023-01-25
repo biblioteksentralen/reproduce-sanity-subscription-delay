@@ -17,14 +17,15 @@ const Contents = styled.section`
   display: flex;
 `;
 
-export const Layout = ({ children }: { children: ReactNode }) => {
+export const EditorLayout = ({ children }: { children: ReactNode }) => {
   const { query } = useRouter();
 
   const viewingDocumentType = query.documentType;
 
   if (
-    typeof viewingDocumentType !== "string" &&
-    typeof viewingDocumentType !== "undefined"
+    typeof window === "undefined" ||
+    (typeof viewingDocumentType !== "string" &&
+      typeof viewingDocumentType !== "undefined")
   ) {
     console.error(`Could not find document type "${viewingDocumentType}`);
     return (

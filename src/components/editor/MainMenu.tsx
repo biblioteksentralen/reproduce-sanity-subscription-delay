@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { isObjectSchemaType, useSchema } from "sanity";
 import { Menu } from "./Menu";
 import { MenuItem } from "./MenuItem";
 
 const mainDocumentTypes = ["event", "service"] as const;
-
+// const documentTypeSchemas: { name: string; title: string }[] = [];
 export const MainMenu = () => {
   const schema = useSchema();
   const { query } = useRouter();

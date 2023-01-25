@@ -176,6 +176,15 @@ const dataset = "test";
 
 // const isLocalizedStringSchemaType = ({ name }: SchemaType) => name === "localizedString";
 
+// export const createConfig = () =>
+// defineConfig({
+//   // name: "editor",
+//   basePath: "/editor",
+//   projectId,
+//   dataset,
+//   schema: { types: getSchemaTypes() },
+// });
+
 export const createConfig = () =>
   defineConfig([
     {
