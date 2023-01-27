@@ -19,7 +19,7 @@ export const MainMenu = () => {
   );
 
   return (
-    <Menu title="Menu">
+    <Menu title="Meny">
       {documentTypeSchemas.map(({ name, title }) => (
         <MenuItem
           key={name}

@@ -80,7 +80,7 @@ const DocumentListMenu = ({
             selected={getPublishedId(document._id) === query.documentId}
             href={`/editor/${documentType}/${getPublishedId(document._id)}`}
             // @ts-ignore
-            title={document?.title?.nb}
+            title={document?.title}
           />
         ))}
       </Menu>

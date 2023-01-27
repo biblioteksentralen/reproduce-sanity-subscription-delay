@@ -10,6 +10,6 @@ const Wrapper = styled.div`
 
 export const Navbar = () => (
   <Wrapper>
-    <NextLink href="/editor">Navbar</NextLink>
+    <NextLink href="/editor">Hjem</NextLink>
   </Wrapper>
 );

@@ -15,6 +15,7 @@ const Title = styled.div`
   gap: 1rem;
   flex-wrap: nowrap;
   padding: 1rem;
+  white-space: nowrap;
 
   &:hover {
     background: lightgray;
