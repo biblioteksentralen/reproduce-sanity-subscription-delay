@@ -1,4 +1,4 @@
-// import { Flex, Spinner } from "@biblioteksentralen/js-utils";
+import isEqual from "lodash/isEqual";
 import orderBy from "lodash/orderBy";
 import uniqWith from "lodash/uniqWith";
 import { groq } from "next-sanity";
@@ -11,17 +11,10 @@ import {
   documentIdEquals,
   type SanityDocument,
 } from "sanity";
+import { DocumentListMenuItem } from "./DocumentListMenuItem";
 import { Menu } from "./Menu";
 import { MenuItem } from "./MenuItem";
 import { useDocumentTypeSchema } from "./useDocumentTypeSchema";
-
-const documentIsDraft = ({ _id }: { _id: string }) => isDraftId(_id);
-
-/** Treats published and drafts versions of the same document as equal */
-const documentsAreEqual = (
-  { _id: id1 }: SanityDocument,
-  { _id: id2 }: SanityDocument
-) => documentIdEquals(id1, id2);
 
 const DocumentListMenu = ({
   documentType,
@@ -31,35 +24,30 @@ const DocumentListMenu = ({
   const documentStore = useDocumentStore();
   const { query } = useRouter();
   const documentTypeSchema = useDocumentTypeSchema(documentType);
-  const [documents, setDocuments] = useState<SanityDocument[] | undefined>(
+  const [documentIds, setDocumentIds] = useState<string[] | undefined>(
     undefined
   );
 
   useEffect(() => {
-    const docQuery = groq`*[ _type == $documentType]{ _id, _updatedAt, title }`;
+    const docQuery = groq`*[ _type == $documentType]._id | order(_updatedAt)`;
     const docObservable = documentStore.listenQuery(
       docQuery,
       { documentType },
       { throttleTime: 300 }
     );
 
-    const next = (updatedDocs: SanityDocument[]) => {
-      const updatedDocsDraftsFirst = orderBy(
-        updatedDocs,
-        documentIsDraft,
-        "desc"
-      );
+    const next = (updatedIds: string[]) => {
+      const updatedDocsDraftsFirst = orderBy(updatedIds, isDraftId, "desc");
       const updatedDocsDraftsPreferred = uniqWith(
         updatedDocsDraftsFirst,
-        documentsAreEqual
-      );
-      const updatedDocsOrderedByUpdate = orderBy(
-        updatedDocsDraftsPreferred,
-        "_updatedAt",
-        "desc"
+        documentIdEquals
       );
 
-      setDocuments(updatedDocsOrderedByUpdate);
+      setDocumentIds((current) =>
+        isEqual(current, updatedDocsDraftsPreferred)
+          ? current
+          : updatedDocsDraftsPreferred
+      );
     };
 
     docObservable.subscribe({
@@ -73,14 +61,13 @@ const DocumentListMenu = ({
   return (
     <>
       <Menu title={documentTypeSchema?.title}>
-        {!documents && <div>Loading...</div>}
-        {documents?.map((document) => (
-          <MenuItem
-            key={document._id}
-            selected={getPublishedId(document._id) === query.documentId}
-            href={`/editor/${documentType}/${getPublishedId(document._id)}`}
-            // @ts-ignore
-            title={document?.title}
+        {!documentIds && <div>Loading...</div>}
+        {documentIds?.map((id) => (
+          <DocumentListMenuItem
+            key={id}
+            documentId={id}
+            selected={getPublishedId(id) === query.documentId}
+            href={`/editor/${documentType}/${getPublishedId(id)}`}
           />
         ))}
       </Menu>
