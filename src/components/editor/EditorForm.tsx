@@ -11,7 +11,7 @@ import {
   ValidationMarker,
   SanityDocument,
   ObjectField,
-  StringSchemaType,
+  // StringSchemaType,
   SchemaType,
 } from "sanity";
 import { StringInput } from "./StringInput";
@@ -37,11 +37,12 @@ const Form = styled.form`
   gap: 1rem;
 `;
 
-const isStringField = (
+const isLocalizedField = (
   field: ObjectField<SchemaType>
-): field is ObjectField<StringSchemaType> => field.type.name === "string";
+): field is ObjectField<ObjectSchemaType> =>
+  field.type.name === "localizedString";
 
-export const DocumentEditor = ({
+export const EditorForm = ({
   id,
   documentTypeSchema,
 }: {
@@ -119,23 +120,36 @@ export const DocumentEditor = ({
     <Section>
       <Heading>
         {/* @ts-ignore */}
-        {(isLoading ? "Laster..." : document?.title) ?? "Ukjent dokument"}
+        {(isLoading ? "Laster..." : document?.title?.nb) ?? "Ukjent dokument"}
       </Heading>
       {isLoading && <div>Loading...</div>}
       {!isLoading && (
         <Form>
           {documentTypeSchema.fields
-            .filter(isStringField)
-            .map(({ name, type }) => (
-              <StringInput
-                key={name}
-                document={document!}
-                path={[name]}
-                patch={patch}
-                type={type}
-                validation={getValidationMarkers(validationMarkers, name)}
-              />
-            ))}
+            .filter(isLocalizedField)
+            .map(({ name, type }) => {
+              const nbType = type.fields.find(
+                ({ name }) => name === "nb"
+              )?.type;
+
+              if (!nbType) {
+                console.error(
+                  `Could not find "nb" field of field type "${name}"`
+                );
+                return null;
+              }
+
+              return (
+                <StringInput
+                  key={name}
+                  document={document!}
+                  path={[name, "nb"]}
+                  patch={patch}
+                  type={nbType}
+                  validation={getValidationMarkers(validationMarkers, name)}
+                />
+              );
+            })}
         </Form>
       )}
     </Section>

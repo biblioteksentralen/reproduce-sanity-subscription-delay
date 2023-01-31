@@ -12,10 +12,14 @@ export const DocumentListMenuItem = ({
   href: string;
   selected: boolean;
 }) => {
-  const documentValues = useDocumentValues(documentId, valuePaths);
+  const documentValues = useDocumentValues<{ title?: { nb?: string } }>(
+    documentId,
+    valuePaths
+  );
+
   const title =
-    typeof documentValues?.value?.title === "string"
-      ? documentValues?.value?.title
+    typeof documentValues?.value?.title?.nb === "string"
+      ? documentValues?.value?.title?.nb
       : "...";
 
   return <MenuItem href={href} selected={selected} title={title} />;

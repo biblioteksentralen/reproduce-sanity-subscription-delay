@@ -85,8 +85,8 @@ const getSchemaTypes = () => [
       defineField({
         name: "title",
         title: "Tittel",
-        type: "string", // TODO: Try to reproduce without localizing
-        // type: "localizedString", // TODO: Do we need localization to reproduce?
+        // type: "string", // TODO: Try to reproduce without localizing
+        type: "localizedString", // TODO: Do we need localization to reproduce?
         // validation: (Rule: RuleType) => Rule.custom(requiredInLanguages(languages)),
       }),
       defineField({
@@ -156,12 +156,12 @@ const getSchemaTypes = () => [
   //   ],
   // },
   // Make special types like in Forrigebok:
-  // defineField({
-  //   name: "localizedString",
-  //   title: "Lokalisert streng",
-  //   type: "object",
-  //   fields: [{ name: "nb", title: "Bokmål", type: "string" }],
-  // }),
+  defineField({
+    name: "localizedString",
+    title: "Lokalisert streng",
+    type: "object",
+    fields: [{ name: "nb", title: "Bokmål", type: "string" }],
+  }),
   // defineField({
   //   name: "richTextBlock",
   //   type: "array",

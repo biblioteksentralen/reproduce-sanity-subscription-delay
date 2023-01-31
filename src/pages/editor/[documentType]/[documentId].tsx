@@ -1,6 +1,6 @@
 import { useDocumentTypeSchema } from "@/components/editor/useDocumentTypeSchema";
 import { useRouter } from "next/router";
-import { DocumentEditor } from "@/components/editor/DocumentEditor";
+import { EditorForm } from "@/components/editor/EditorForm";
 
 export default function DocumentTypeForm() {
   const { query } = useRouter();
@@ -13,9 +13,6 @@ export default function DocumentTypeForm() {
   }
 
   return (
-    <DocumentEditor
-      documentTypeSchema={documentTypeSchema}
-      id={query.documentId}
-    />
+    <EditorForm documentTypeSchema={documentTypeSchema} id={query.documentId} />
   );
 }
