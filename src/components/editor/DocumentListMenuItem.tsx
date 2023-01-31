@@ -16,7 +16,7 @@ export const DocumentListMenuItem = ({
   const title =
     typeof documentValues?.value?.title === "string"
       ? documentValues?.value?.title
-      : "Ukjent";
+      : "...";
 
   return <MenuItem href={href} selected={selected} title={title} />;
 };

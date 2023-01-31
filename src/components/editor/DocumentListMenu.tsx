@@ -13,8 +13,9 @@ import {
 } from "sanity";
 import { DocumentListMenuItem } from "./DocumentListMenuItem";
 import { Menu } from "./Menu";
-import { MenuItem } from "./MenuItem";
 import { useDocumentTypeSchema } from "./useDocumentTypeSchema";
+
+const serviceParentId = "83de5620-d93a-4653-95d4-f42cd7cc7c76";
 
 const DocumentListMenu = ({
   documentType,
@@ -29,10 +30,10 @@ const DocumentListMenu = ({
   );
 
   useEffect(() => {
-    const docQuery = groq`*[ _type == $documentType]._id | order(_updatedAt)`;
+    const docQuery = groq`*[_type == $documentType && parent._ref == $serviceParentId ]._id | order(_updatedAt)`;
     const docObservable = documentStore.listenQuery(
       docQuery,
-      { documentType },
+      { documentType, serviceParentId },
       { throttleTime: 300 }
     );
 
@@ -60,7 +61,7 @@ const DocumentListMenu = ({
 
   return (
     <>
-      <Menu title={documentTypeSchema?.title}>
+      <Menu title={documentTypeSchema?.title || "..."}>
         {!documentIds && <div>Loading...</div>}
         {documentIds?.map((id) => (
           <DocumentListMenuItem

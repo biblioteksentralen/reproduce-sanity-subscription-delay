@@ -89,6 +89,40 @@ const getSchemaTypes = () => [
         // type: "localizedString", // TODO: Do we need localization to reproduce?
         // validation: (Rule: RuleType) => Rule.custom(requiredInLanguages(languages)),
       }),
+      defineField({
+        name: "parent",
+        type: "reference",
+        to: [{ type: "serviceParent" }],
+      }),
+      // defineField({
+      //   name: "body",
+      //   title: "Tekst",
+      //   type: "localizedRichTextBlock",
+      //   // validation: (Rule: RuleType) => Rule.custom(requiredInSiteLanguages), TODO
+      // }),
+      // defineField({
+      //   name: "image",
+      //   title: "Bilde",
+      //   type: "imageWithMetadata",
+      // }),
+      // defineField({
+      //   type: "reference",
+      //   to: [{ type: "serviceType" }],
+      //   name: "serviceType",
+      //   title: "Tjenestetype",
+      // }),
+    ],
+  },
+  {
+    name: "serviceParent",
+    title: "Tjeneste-eier",
+    type: "document",
+    fields: [
+      defineField({
+        name: "title",
+        title: "Tittel",
+        type: "string",
+      }),
       // defineField({
       //   name: "body",
       //   title: "Tekst",
