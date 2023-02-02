@@ -58,13 +58,7 @@ export const useStringValue = (
 
     // Use callback version of setState so that updates in patch don't lead to superfluous patch.execute
     setPendingPatch((currentPendingPatch) => {
-      // FIXME: Use setTimeout to avoid react error from rendering another component
-      // TO reproduce: Go to a document further down the list and edit the title so that it updates in the list view
-      if (currentPendingPatch) {
-        // console.log("😱 PENDING", currentPendingPatch);
-
-        setTimeout(() => patch.execute([currentPendingPatch], {}));
-      }
+      if (currentPendingPatch) patch.execute([currentPendingPatch], {});
       return undefined;
     });
   }, [patch, pendingPatch]);
